@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Tranining Project</string>
+    <string name="Start_btn_text">Start services</string>
+    <string name="Stop_btn_text">Stop services</string>
+    <string name="btn_detect_the_intent">Detect The intent</string>
+    <string name="Permission_deined_msg">You have denied the access of camera!</string>
+</resources>
