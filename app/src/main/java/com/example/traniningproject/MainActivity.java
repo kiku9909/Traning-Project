@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private CardView service_card, broadcast_card;
     private CardView camera_card;
     private CardView sensor_card;
+    private CardView notification_card;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +34,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         sensor_card = (CardView) findViewById(R.id.Sensor_activity);
         sensor_card.setOnClickListener(this);
+
+        notification_card = (CardView) findViewById(R.id.Notification_activity);
+        notification_card.setOnClickListener(this);
     }
 
     //redirecting to specific activity
@@ -57,6 +61,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             //sensor activity
             case R.id.Sensor_activity:
                 startActivity(new Intent(MainActivity.this,SensorActivity.class));
+                break;
+
+            //sensor activity
+            case R.id.Notification_activity:
+                startActivity(new Intent(MainActivity.this,notification.class));
                 break;
         }
     }
