@@ -6,4 +6,6 @@
     <string name="Permission_deined_msg">You have denied the access of camera!</string>
     <string name="channel_name">chanel1</string>
     <string name="channel_description">chanel_description</string>
+    <string name="ply_btn">Play button</string>
+    <string name="song_name">Song Name</string>
 </resources>
