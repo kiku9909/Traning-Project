@@ -12,7 +12,7 @@ import com.example.traniningproject.Reciveres.Myreciver;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private CardView service_card, broadcast_card,camera_card,sensor_card,notification_card,MediaPlayer_card;
+    private CardView service_card, broadcast_card,camera_card,sensor_card,notification_card,MediaPlayer_card,VideomediaPlayer_card;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +37,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         MediaPlayer_card = (CardView) findViewById(R.id.MediaPlayer_activity);
         MediaPlayer_card.setOnClickListener(this);
+
+        VideomediaPlayer_card = (CardView) findViewById(R.id.VedioMediaPlayer_activity);
+        VideomediaPlayer_card.setOnClickListener(this);
     }
 
     //redirecting to specific activity
@@ -71,6 +74,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             //Media player activity
             case R.id.MediaPlayer_activity:
                 startActivity(new Intent(MainActivity.this,MediaPlayer.class));
+                break;
+
+            //video Media player activity
+            case R.id.VedioMediaPlayer_activity:
+                startActivity(new Intent(MainActivity.this,VideoPlayer.class));
                 break;
         }
     }

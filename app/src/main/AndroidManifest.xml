@@ -15,9 +15,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MediaPlayer"
+        <activity android:name=".VideoPlayer"
+            android:screenOrientation="landscape"
             android:parentActivityName=".MainActivity"
-            android:screenOrientation="portrait"></activity>
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        <activity
+            android:name=".MediaPlayer"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".notification"
             android:parentActivityName=".MainActivity"
