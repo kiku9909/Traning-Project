@@ -1,5 +1,7 @@
 package com.example.traniningproject;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.MediaController;
@@ -13,9 +15,8 @@ public class VideoPlayer extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_player);
-//        spoken_word.mp4
 
-//        initialization
+        //initialization
         Vview = (VideoView) findViewById(R.id.ContainervideoView);
 
         /**
@@ -24,7 +25,7 @@ public class VideoPlayer extends AppCompatActivity {
          */
         Vview.setVideoPath("android.resource://" + getPackageName() + "/" + R.raw.spoken_word);
 
-//        assigning the controller to the video view
+        //assigning the controller to the video view
         MediaController controller = new MediaController(this);
         controller.setAnchorView(Vview);
         Vview.setMediaController(controller);
