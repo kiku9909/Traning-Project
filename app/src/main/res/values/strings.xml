@@ -8,4 +8,7 @@
     <string name="channel_description">chanel_description</string>
     <string name="ply_btn">Play button</string>
     <string name="song_name">Song Name</string>
+    <string name="student_name">TextView</string>
+    <string name="icon_for_student">icon for student</string>
+    <string name="Enroll">160093107006</string>
 </resources>

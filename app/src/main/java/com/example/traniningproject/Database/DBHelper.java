@@ -18,8 +18,9 @@ public class DBHelper extends SQLiteOpenHelper {
      * memory, so it utilise space not to allocate for every instance.
      */
 
-    private static String CREAT_TABLE_QUERY = "CREATE TABLE " + DBConfig.TABLE_NAME_1 + " (_id INTEGER PRIMARY KEY AUTOINCREMENT," + DBConfig.DB_CO1 + " VARCHAR(15)," + DBConfig.DB_CO2 + " INTEGER)";
+    private static String CREAT_TABLE_QUERY = "CREATE TABLE " + DBConfig.TABLE_NAME_1 + " (_id INTEGER PRIMARY KEY AUTOINCREMENT," + DBConfig.DB_CO1 + " TEXT," + DBConfig.DB_CO2 + " INTEGER)";
     private static String DROP_IF_EXISTS_QUERY = "DROP TABLE IF EXISTS " + DBConfig.TABLE_NAME_1;
+    private static SQLiteDatabase db;
 
     public DBHelper(Context context) {
         //Creating Database
@@ -35,6 +36,7 @@ public class DBHelper extends SQLiteOpenHelper {
          * it will generate the Table with
          * its necessary arguments.
          */
+//        db = this.getWritableDatabase();
 
         db.execSQL(CREAT_TABLE_QUERY);
         Log.e("Database LOG", "onCreate: " + db.getPath());
@@ -49,8 +51,8 @@ public class DBHelper extends SQLiteOpenHelper {
          * and update it or we can say replace it with NEW VERSION
          */
 
-        db.execSQL(DROP_IF_EXISTS_QUERY);
-        onCreate(db);
+//        db.execSQL(DROP_IF_EXISTS_QUERY);
+//        onCreate(db);
     }
 
     /**
@@ -59,15 +61,16 @@ public class DBHelper extends SQLiteOpenHelper {
      * perform the DATA BASE CRUD operation
      * ...
      *
-     * @param db database instances
+     * @param dbHelper database instances
      * @param Projection which columns you want [col1, col2, ..]
      * @param Selection eg : where title = "MY_TITLE" (where clause)
      * @param SelectionArgs Where clause Arguments [..]
      * @param SortOrder OrderBy which sorted order DESC or ACES
      * @return Cursor which store all the data receive by the Select Operation
      */
-    public static Cursor dbSelection(SQLiteDatabase db, String[] Projection, String Selection, String[] SelectionArgs, String SortOrder) {
 
+    public static Cursor dbSelection(DBHelper dbHelper, String[] Projection, String Selection, String[] SelectionArgs, String SortOrder) {
+        db = dbHelper.getReadableDatabase();
         return db.query(
                 DBConfig.TABLE_NAME_1,
                 Projection,
@@ -82,12 +85,12 @@ public class DBHelper extends SQLiteOpenHelper {
 
     /**
      *
-     * @param db database instances
+     * @param dbHelper database instances
      * @param values name value pair array which is use to store values in table
      * @return last inserted _ID
      */
-    public static Long dbInsertion(SQLiteDatabase db, ContentValues values) {
-
+    public static Long dbInsertion(DBHelper dbHelper, ContentValues values) {
+        db = dbHelper.getWritableDatabase();
         return db.insert(
                 DBConfig.TABLE_NAME_1,
                 null,
@@ -97,13 +100,13 @@ public class DBHelper extends SQLiteOpenHelper {
 
     /**
      *
-     * @param db database instances
+     * @param dbHelper database instances
      * @param Selection eg : where title = "MY_TITLE" (where clause)
      * @param SelectionArgs Where clause Arguments [..]
      * @return last deleted _ID
      */
-    public static int dbDeletion(SQLiteDatabase db, String Selection, String[] SelectionArgs) {
-
+    public static int dbDeletion(DBHelper dbHelper, String Selection, String[] SelectionArgs) {
+        db = dbHelper.getWritableDatabase();
         return db.delete(
                 DBConfig.TABLE_NAME_1,
                 Selection,
@@ -113,14 +116,14 @@ public class DBHelper extends SQLiteOpenHelper {
 
     /**
      *
-     * @param db database instances
+     * @param dbHelper database instances
      * @param values name value pair array which is use to update values in table
      * @param Selection eg : where title = "MY_TITLE" (where clause)
      * @param SelectionArgs Where clause Arguments [..]
      * @return last updated _ID
      */
-    public static int dbUpdation(SQLiteDatabase db, ContentValues values, String Selection, String[] SelectionArgs) {
-
+    public static int dbUpdation(DBHelper dbHelper, ContentValues values, String Selection, String[] SelectionArgs) {
+        db = dbHelper.getWritableDatabase();
         return db.update(
                 DBConfig.TABLE_NAME_1,
                 values,
