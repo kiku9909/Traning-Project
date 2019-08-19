@@ -1,8 +1,9 @@
 package com.example.traniningproject.Model;
 
 public class StudentListGetSet {
+    int _id;
     String Name;
-    int eno;
+    String eno;
 
     public String getName() {
         return Name;
@@ -12,11 +13,19 @@ public class StudentListGetSet {
         Name = name;
     }
 
-    public int getEno() {
+    public String getEno() {
         return eno;
     }
 
-    public void setEno(int eno) {
+    public void setEno(String eno) {
         this.eno = eno;
+    }
+
+    public int get_id() {
+        return _id;
+    }
+
+    public void set_id(int _id) {
+        this._id = _id;
     }
 }

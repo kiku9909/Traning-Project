@@ -5,25 +5,22 @@ package com.example.traniningproject;
 
 import android.app.Dialog;
 import android.content.ContentValues;
-import android.database.AbstractCursor;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
-import android.support.annotation.LayoutRes;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.traniningproject.Adaptor.studentListAdaptor;
@@ -32,11 +29,15 @@ import com.example.traniningproject.Database.DBHelper;
 import com.example.traniningproject.Model.StudentListGetSet;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class DatabaseDemo extends AppCompatActivity {
 
+    private static final String TAG = "DatabaseDemoTAg";
     private RecyclerView studList;
+    private TextInputLayout nameET;
+    private TextInputLayout enET;
+    private Button addbtn;
+    private Dialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,18 +66,40 @@ public class DatabaseDemo extends AppCompatActivity {
 
                 WindowManager.LayoutParams params = new WindowManager.LayoutParams();
                 params.width = WindowManager.LayoutParams.MATCH_PARENT;
-                params.height =WindowManager.LayoutParams.WRAP_CONTENT;
+                params.height = WindowManager.LayoutParams.WRAP_CONTENT;
                 params.gravity = Gravity.CENTER;
 
-                Dialog dialog = new Dialog(DatabaseDemo.this);
+                dialog = new Dialog(DatabaseDemo.this);
                 dialog.setContentView(R.layout.add_new_student_dialog);
                 dialog.getWindow().setAttributes(params);
                 dialog.show();
+
+                initDialog(dialog);
+                listenerDialog();
 
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void listenerDialog() {
+        addbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String name = nameET.getEditText().getText().toString();
+                String eno = enET.getEditText().getText().toString();
+                if (!(name.isEmpty()) && !(eno.isEmpty())) {
+                    new InsertNewStudent().execute(name, eno);
+                }
+            }
+        });
+    }
+
+    private void initDialog(Dialog view) {
+        nameET = (TextInputLayout) view.findViewById(R.id.NameET);
+        enET = (TextInputLayout) view.findViewById(R.id.enoET);
+        addbtn = (Button) view.findViewById(R.id.add_btn);
     }
 
 
@@ -92,7 +115,8 @@ public class DatabaseDemo extends AppCompatActivity {
             while (s.moveToNext()) {
                 StudentListGetSet getSet = new StudentListGetSet();
                 getSet.setName(s.getString(s.getColumnIndexOrThrow(DBConfig.DB_CO1)));
-                getSet.setEno(s.getInt(s.getColumnIndexOrThrow(DBConfig.DB_CO2)));
+                getSet.setEno(s.getString(s.getColumnIndexOrThrow(DBConfig.DB_CO2)));
+                getSet.set_id(s.getInt(s.getColumnIndexOrThrow("_id")));
                 itemIds.add(getSet);
             }
             s.close();
@@ -121,16 +145,35 @@ public class DatabaseDemo extends AppCompatActivity {
         }
     }
 
-    class InsertNewStudent extends AsyncTask<String,String,String>{
+    class InsertNewStudent extends AsyncTask<String, String, String> {
+
+        DBHelper helper;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            helper = new DBHelper(DatabaseDemo.this);
+        }
 
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+            if (Long.valueOf(s) != (-1)) {
+                Toast.makeText(DatabaseDemo.this, "Enterd", Toast.LENGTH_SHORT).show();
+                new LoadStudentList().execute();
+                dialog.dismiss();
+            }
         }
 
         @Override
         protected String doInBackground(String... strings) {
-            return null;
+
+            Log.d(TAG, "doInBackground: number " + strings[1]);
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(DBConfig.DB_CO1, strings[0]);
+            contentValues.put(DBConfig.DB_CO2, strings[1]);
+            return String.valueOf(DBHelper.dbInsertion(helper, contentValues));
+
         }
     }
 }
